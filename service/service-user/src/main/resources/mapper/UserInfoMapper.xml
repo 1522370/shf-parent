@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.mapper.UserInfoMapper">
+    <sql id="columns">
+        SELECT id,phone,nick_name,password,status,create_time,update_time,is_deleted
+    </sql>
+
+    <select id="getByPhone" resultType="UserInfo">
+        <include refid="columns"></include>
+        FROM user_info WHERE phone=#{phone} AND is_deleted=0
+    </select>
+
+    <select id="getByNickname" resultType="UserInfo">
+        <include refid="columns"></include>
+        FROM user_info WHERE nick_name=#{nickname} AND is_deleted=0
+    </select>
+
+    <insert id="insert">
+        INSERT INTO user_info (phone,nick_name,password,status) VALUES (#{phone},#{nickName},#{password},#{status})
+    </insert>
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.mapper.UserFollowMapper">
+    <sql id="columns">
+        SELECT id,user_id,house_id,create_time,update_time
+    </sql>
+    <select id="findByUserIdAndHouseId" resultType="UserFollow">
+        <include refid="columns"></include>
+        FROM user_follow WHERE user_id=#{userId} AND house_id=#{houseId} AND is_deleted=0
+    </select>
+
+    <insert id="insert">
+        INSERT INTO user_follow (user_id,house_id) VALUES (#{userId},#{houseId})
+    </insert>
+
+    <select id="findListPage" resultType="UserFollowVo">
+        SELECT
+            uf.id,uf.house_id,uf.update_time,
+            hh.build_area,hh.name,hh.total_price,hh.default_image_url,
+            (SELECT NAME FROM hse_dict WHERE id=hh.direction_id) directionName,
+            (SELECT NAME FROM hse_dict WHERE id=hh.floor_id) floorName,
+            (SELECT NAME FROM hse_dict WHERE id=hh.house_type_id) houseTypeName
+        FROM
+            user_follow uf JOIN hse_house hh
+                                ON uf.house_id=hh.id
+        WHERE uf.user_id=#{userId} AND uf.is_deleted=0 AND hh.is_deleted=0 AND hh.status=1
+        ORDER BY uf.update_time DESC
+    </select>
+
+    <update id="delete">
+        UPDATE user_follow SET is_deleted=1,update_time=now() WHERE id=#{id} AND is_deleted=0
+    </update>
+</mapper>

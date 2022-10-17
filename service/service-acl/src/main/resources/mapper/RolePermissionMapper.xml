@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.mapper.RolePermissionMapper">
+    <select id="findPermissionIdListByRoleId" resultType="long">
+        SELECT permission_id FROM acl_role_permission WHERE role_id=#{roleId} AND is_deleted=0
+    </select>
+    
+    <update id="deleteByRoleId">
+        UPDATE acl_role_permission SET is_deleted=1 WHERE role_id=#{roleId} AND is_deleted=0
+    </update>
+
+    <insert id="insert">
+        INSERT INTO acl_role_permission (role_id,permission_id) VALUES (#{roleId},#{permissionId})
+    </insert>
+
+    <update id="deletByRoleIdAndPermissionIdList">
+        UPDATE acl_role_permission SET is_deleted=1
+        WHERE role_id=#{roleId} AND permission_id IN (
+            <foreach collection="removePermissionIdList" item="permissionId" separator=",">
+                #{permissionId}
+            </foreach>
+        ) AND is_deleted=0
+    </update>
+
+    <select id="findByRoleIdAndPermissionId" resultType="RolePermission">
+        SELECT id,role_id,permission_id,create_time,update_time,is_deleted
+        FROM acl_role_permission WHERE role_id=#{roleId} AND permission_id=#{permissionId}
+    </select>
+
+    <update id="update">
+        UPDATE acl_role_permission SET is_deleted=#{isDeleted},update_time=now() WHERE id=#{id}
+    </update>
+</mapper>
