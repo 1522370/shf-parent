@@ -106,11 +106,11 @@
                 <version>${pagehelper.version}</version>
             </dependency>
             <!-- Mybatis -->
-            <dependency>
-                <groupId>org.mybatis</groupId>
-                <artifactId>mybatis</artifactId>
-                <version>${mybatis.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.mybatis</groupId>-->
+<!--                <artifactId>mybatis</artifactId>-->
+<!--                <version>${mybatis.version}</version>-->
+<!--            </dependency>-->
             <!-- Mybatis与Spring整合所需要的jar包 -->
             <dependency>
                 <groupId>org.mybatis</groupId>
